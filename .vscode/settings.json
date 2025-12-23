@@ -2,6 +2,7 @@
     "conventionalCommits.scopes": [
         "terraform.yml",
         ".vscode",
-        "README.md"
+        "README.md",
+        "templates"
     ]
 }

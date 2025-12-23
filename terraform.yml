@@ -62,4 +62,4 @@ tasks:
           cp {{.TASKFILE_DIR}}/templates/.terraform-docs.yml .terraform-docs.yml
           echo "Created .terraform-docs.yml"
         fi
-      - terraform-docs markdown --recursive --output-file README.md .
+      - terraform-docs markdown table --recursive --header-from main.tf --output-file README.md .
