@@ -52,3 +52,27 @@ tasks:
     dir: '{{.USER_WORKING_DIR}}/{{.TF_DIR}}'
     cmds:
       - terraform destroy
+
+  create-docs:
+    desc: "Generate Terraform documentation recursively"
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - |
+        if [ ! -f .terraform-docs.yml ]; then
+          cat > .terraform-docs.yml <<'EOF'
+        content: |-
+          {{ .Header }}
+
+          ## Example
+
+          ```hcl
+          {{ include "example/main.tf" }}
+          ```
+
+          {{ .Inputs }}
+
+          {{ .Outputs }}
+        EOF
+          echo "Created .terraform-docs.yml"
+        fi
+      - terraform-docs markdown --recursive --output-file README.md .
