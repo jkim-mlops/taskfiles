@@ -1,6 +1,7 @@
 {
     "conventionalCommits.scopes": [
         "terraform.yml",
-        ".vscode"
+        ".vscode",
+        "README.md"
     ]
 }
