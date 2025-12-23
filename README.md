@@ -2,18 +2,25 @@
 Shared tasks to streamline workflow.
 
 ## Usage
-Reference the listed task config files in your local `Taskfile.yml` using `includes`.
+1. Clone this repository to your local `$HOME` directory. I've cloned it into my `projects` folder subdirectory.
+
+1. Create a `Taskfile.yml` file in your `$HOME` directory with
 
 ```yml
 version: '3'
 
 includes:
   tf:
-    taskfile: https://github.com/jkim-mlops/taskfiles.git/terraform.yml?ref=0.1.0
-    dir: deployment
+    taskfile: ./projects/taskfiles/terraform.yml
 
 tasks:
-  deploy:
+  default:
     cmds:
-      - task tf:apply
+      - task --list
 ```
+
+1. Globally reference the tasks with the `-g` flag.
+
+    ```
+    task -g
+    ```
