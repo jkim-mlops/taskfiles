@@ -4,7 +4,7 @@ Shared tasks to streamline workflow.
 ## Usage
 Reference the listed task config files in your local `Taskfile.yml` using `includes`.
 
-    ```yml
+    ```yaml
     version: '3'
 
     includes:
