@@ -4,7 +4,7 @@ env:
   TF_DIR: deployment
 
 tasks:
-  create-backend:
+  backend:
     desc: "Create backend.hcl file with proper configuration"
     dir: '{{.USER_WORKING_DIR}}/{{.TF_DIR}}'
     vars:
@@ -53,26 +53,13 @@ tasks:
     cmds:
       - terraform destroy
 
-  create-docs:
+  docs:
     desc: "Generate Terraform documentation recursively"
     dir: '{{.USER_WORKING_DIR}}'
     cmds:
       - |
         if [ ! -f .terraform-docs.yml ]; then
-          cat > .terraform-docs.yml <<'EOF'
-        content: |-
-          {{ .Header }}
-
-          ## Example
-
-          ```hcl
-          {{ include "example/main.tf" }}
-          ```
-
-          {{ .Inputs }}
-
-          {{ .Outputs }}
-        EOF
+          cp {{.TASKFILE_DIR}}/templates/.terraform-docs.yml .terraform-docs.yml
           echo "Created .terraform-docs.yml"
         fi
       - terraform-docs markdown --recursive --output-file README.md .
