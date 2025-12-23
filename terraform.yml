@@ -1,9 +1,12 @@
 version: '3'
 
+env:
+  TF_DIR: deployment
 
 tasks:
   create-backend:
     desc: "Create backend.hcl file with proper configuration"
+    dir: '{{.USER_WORKING_DIR}}/{{.TF_DIR}}'
     vars:
       AWS_ACCOUNT_ID:
         sh: aws sts get-caller-identity --query Account --output text
@@ -28,20 +31,24 @@ tasks:
 
   init:
     desc: "Initialize Terraform with backend configuration"
+    dir: '{{.USER_WORKING_DIR}}/{{.TF_DIR}}'
     cmds:
       - terraform init -backend-config=backend.hcl
 
   plan:
     desc: "Run Terraform plan"
+    dir: '{{.USER_WORKING_DIR}}/{{.TF_DIR}}'
     cmds:
       - terraform plan
 
   apply:
     desc: "Run Terraform apply"
+    dir: '{{.USER_WORKING_DIR}}/{{.TF_DIR}}'
     cmds:
       - terraform apply
 
   destroy:
     desc: "Run Terraform destroy"
+    dir: '{{.USER_WORKING_DIR}}/{{.TF_DIR}}'
     cmds:
       - terraform destroy
