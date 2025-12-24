@@ -62,7 +62,17 @@ tasks:
     cmds:
       - |
         if [ ! -f .terraform-docs.yml ]; then
-          cp {{.TASKFILE_DIR}}/templates/.terraform-docs.yml .terraform-docs.yml
-          echo "Created .terraform-docs.yml"
+          if [ -d example ]; then
+            cp {{.TASKFILE_DIR}}/templates/.terraform-docs.yml .terraform-docs.yml
+            echo "Created .terraform-docs.yml (with example)"
+          else
+            cp {{.TASKFILE_DIR}}/templates/.terraform-docs-no-example.yml .terraform-docs.yml
+            echo "Created .terraform-docs.yml (without example)"
+          fi
         fi
-      - terraform-docs markdown table --recursive --header-from main.tf --output-file README.md .
+      - |
+        if [ -d modules ]; then
+          terraform-docs markdown table --recursive --header-from main.tf --output-file README.md .
+        else
+          terraform-docs markdown table --header-from main.tf --output-file README.md .
+        fi
