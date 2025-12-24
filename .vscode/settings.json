@@ -3,6 +3,7 @@
         "terraform.yml",
         ".vscode",
         "README.md",
-        "templates"
+        "templates",
+        ".terraform-docs-no-example.yml"
     ]
 }
