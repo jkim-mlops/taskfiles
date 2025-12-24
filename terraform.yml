@@ -2,6 +2,7 @@ version: '3'
 
 env:
   TF_DIR: deployment
+  VAR_FILE: terraform.tfvars
 
 tasks:
   backend:
@@ -15,11 +16,13 @@ tasks:
       AWS_PROFILE: joe-dev
       TF_WORKSPACE:
         sh: terraform workspace show 2>/dev/null || echo "default"
+      PROJECT_NAME:
+        sh: basename {{.USER_WORKING_DIR}}
     cmds:
       - |
         cat > backend.hcl <<EOF
         bucket  = "terraform-state-{{.AWS_ACCOUNT_ID}}"
-        key     = "github-actions-runners/terraform.tfstate/{{.TF_WORKSPACE}}"
+        key     = "{{.PROJECT_NAME}}/terraform.tfstate/{{.TF_WORKSPACE}}"
         region  = "{{.AWS_REGION}}"
         encrypt = true
         profile = "{{.AWS_PROFILE}}"
@@ -39,19 +42,19 @@ tasks:
     desc: "Run Terraform plan"
     dir: '{{.USER_WORKING_DIR}}/{{.TF_DIR}}'
     cmds:
-      - terraform plan
+      - terraform plan -var-file="{{.VAR_FILE}}"
 
   apply:
     desc: "Run Terraform apply"
     dir: '{{.USER_WORKING_DIR}}/{{.TF_DIR}}'
     cmds:
-      - terraform apply
+      - terraform apply -var-file="{{.VAR_FILE}}"
 
   destroy:
     desc: "Run Terraform destroy"
     dir: '{{.USER_WORKING_DIR}}/{{.TF_DIR}}'
     cmds:
-      - terraform destroy
+      - terraform destroy -var-file="{{.VAR_FILE}}"
 
   docs:
     desc: "Generate Terraform documentation recursively"
