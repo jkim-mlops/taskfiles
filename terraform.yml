@@ -13,16 +13,14 @@ tasks:
         sh: aws sts get-caller-identity --query Account --output text
       AWS_REGION:
         sh: aws configure get region --profile {{.AWS_PROFILE}}
-      AWS_PROFILE: joe-dev
-      TF_WORKSPACE:
-        sh: terraform workspace show 2>/dev/null || echo "default"
+      AWS_PROFILE: joe-prod
       PROJECT_NAME:
         sh: basename {{.USER_WORKING_DIR}}
     cmds:
       - |
         cat > backend.hcl <<EOF
         bucket  = "terraform-state-{{.AWS_ACCOUNT_ID}}"
-        key     = "{{.PROJECT_NAME}}/terraform.tfstate/{{.TF_WORKSPACE}}"
+        key     = "{{.PROJECT_NAME}}/terraform.tfstate"
         region  = "{{.AWS_REGION}}"
         encrypt = true
         profile = "{{.AWS_PROFILE}}"
